@@ -4,7 +4,8 @@ Rails.application.routes.draw do
    resource :session, only: [:new, :create, :destroy] 
 
    resources :recipes do
-   resources :comments, only: [:create, :destroy]
+      resources :comments, only: [:create, :destroy]
+      resources :likes, only: [:create, :destroy]
    end
 
 end

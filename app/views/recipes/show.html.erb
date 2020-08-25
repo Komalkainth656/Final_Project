@@ -7,6 +7,12 @@
   <p><%= @recipe.created_at %></p>
   </div>
 
+<span class="show-user">Liked by: <%= @recipe.likes.count %></span>
+ <% if @like.present? && @like.persisted? %>
+  <%= link_to "Un-Like", recipe_like_path(@recipe, @like), method: :delete %>
+<% else %>
+  <%= link_to "Like", recipe_likes_path(@recipe), method: :post %>
+<% end %>
 
 <% if can? :edit, @recipe %>
   <%= link_to "Edit", edit_recipe_path(@recipe) %>
@@ -35,7 +41,6 @@
 <h2>Comments</h2>
  
 <% @recipe.comments.each do |comment| %>
-  <p><%= comment.body %></p>
   <hr>
    <p class='show-text'>
         <%= comment.body %><br />
@@ -56,5 +61,5 @@
         <small>
           commented <%= time_ago_in_words(comment.created_at) %> 
         </small>
-      </p>
+    </p>
 <% end %>

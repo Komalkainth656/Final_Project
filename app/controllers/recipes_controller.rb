@@ -1,8 +1,8 @@
 class RecipesController < ApplicationController
     before_action :find_recipe, only: [:show, :edit, :update, :destroy]
     before_action :authenticate_user!, except: [:index, :show]
+    before_action :authorize!, only: [:edit, :update, :destroy]
 
- 
   def index
     @recipes = Recipe.all.order('updated_at DESC') 
   end
@@ -26,6 +26,8 @@ class RecipesController < ApplicationController
     @recipe = Recipe.find(id)
     @comment = Comment.new
     @comments = @recipe.comments.order(created_at: :desc)
+    @like = @recipe.likes.find_by(user: current_user)
+
   end
  
   def edit
@@ -60,5 +62,9 @@ class RecipesController < ApplicationController
   def recipe_params
     params.require(:recipe).permit(:title, :body)
   end
- 
+
+  def authorize! 
+    redirect_to root_path, alert: 'Not Authorized' unless can?(:crud, @recipe)
+  end
+
 end

@@ -15,5 +15,15 @@ class Ability
     can(:crud, Comment) do |comment|
       comment.user == user # current_user
     end
+
+
+    can :like, Recipe do |recipe|
+      user.present? && recipe.user != user
+    end
+
+    can :destroy, Like  do |like|
+      like.user == user
+    end
+
   end
 end
