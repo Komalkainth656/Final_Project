@@ -1,14 +1,19 @@
-<h1><%= @recipe.title %></h1>
- 
-<p><%= @recipe.body %></p>
- 
-<p><%= @recipe.created_at %></p>
+<div class='show-container'>
+<div class=show-bk>
+  <h1 class="show-title">
+    <%= @recipe.title %>
+  </h1>
+  <p class='show-text'><%= @recipe.body %></p>
+  <p><%= @recipe.created_at %></p>
+  </div>
 
-<%= link_to "Edit", edit_recipe_path(@recipe) %>
 
-
-<%= link_to "Delete", recipe_path(@recipe), method: :delete, data: {confirm: "Are you sure?"} %>
-
+<% if can? :edit, @recipe %>
+  <%= link_to "Edit", edit_recipe_path(@recipe) %>
+<% end %>
+<% if can? :destroy, @recipe %>
+  <%= link_to "Delete", recipe_path(@recipe), method: :delete, data: {confirm: "Are you sure?"} %>
+<% end %>
 <hr>
  
 <h2>Add a comment</h2>
@@ -32,4 +37,24 @@
 <% @recipe.comments.each do |comment| %>
   <p><%= comment.body %></p>
   <hr>
+   <p class='show-text'>
+        <%= comment.body %><br />
+        <% if can? :crud, comment %>
+        <small>
+          <%= link_to(
+            "Delete",
+            recipe_comment_path(@recipe, comment),
+            method: :delete, 
+            data: {
+              confirm: "Are you sure?"
+            },
+            class: 'btn btn-shadow show-btn btn-sm',
+          ) %>
+        </small>
+        |
+        <% end %>
+        <small>
+          commented <%= time_ago_in_words(comment.created_at) %> 
+        </small>
+      </p>
 <% end %>

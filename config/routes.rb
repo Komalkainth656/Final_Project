@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
+   root 'recipes#index'
    resources :users, only: [:new, :create]
-   resources :sessions, only: [:new, :create] do
-    delete :destroy, on: :collection
-  end
+   resource :session, only: [:new, :create, :destroy] 
+
    resources :recipes do
-   resources :comments
+   resources :comments, only: [:create, :destroy]
    end
+
 end
