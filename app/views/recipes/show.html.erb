@@ -1,65 +1,80 @@
 <div class='show-container'>
-<div class=show-bk>
-  <h1 class="show-title">
-    <%= @recipe.title %>
-  </h1>
-  <p class='show-text'><%= @recipe.body %></p>
-  <p><%= @recipe.created_at %></p>
-  </div>
+    <div class=show-bk>
+      <h1 class="show-title">
+        <%= @recipe.title %>
+      </h1>
+      <p class='show-text'><%= @recipe.body %></p>
+      <p><%= @recipe.created_at %></p>
+    </div>
 
-<span class="show-user">Liked by: <%= @recipe.likes.count %></span>
- <% if @like.present? && @like.persisted? %>
-  <%= link_to "Un-Like", recipe_like_path(@recipe, @like), method: :delete %>
-<% else %>
-  <%= link_to "Like", recipe_likes_path(@recipe), method: :post %>
-<% end %>
-
-<% if can? :edit, @recipe %>
-  <%= link_to "Edit", edit_recipe_path(@recipe) %>
-<% end %>
-<% if can? :destroy, @recipe %>
-  <%= link_to "Delete", recipe_path(@recipe), method: :delete, data: {confirm: "Are you sure?"} %>
-<% end %>
-<hr>
- 
-<h2>Add a comment</h2>
-<% if @comment.errors.any? %>
-  <ul>
-    <% @comment.errors.full_messages.each do |msg| %>
-      <li><%= msg %><li>
+  <span class="show-user">Liked by: <%= @recipe.likes.count %></span>
+  <span class="btn btn-shadow">
+    <% if @like.present? && @like.persisted? %>
+      <%= link_to "Un-Like", recipe_like_path(@recipe, @like), method: :delete %>
+    <% else %>
+      <%= link_to "Like", recipe_likes_path(@recipe), method: :post %>
     <% end %>
-  </ul>
-<% end %>
-<%= form_for [@recipe, @comment] do |f| %>
-  <div>
-    <%= f.label :body %>
-    <%= f.text_area :body %>
-  </div>
-  <%= f.submit %>
-<% end %>
+  </span>
 
-<h2>Comments</h2>
- 
-<% @recipe.comments.each do |comment| %>
+  <% if can? :edit, @recipe %>
+    <%= link_to "Edit", edit_recipe_path(@recipe),class: 'btn btn-shadow show-btn' %>
+  <% end %>
+  <% if can? :destroy, @recipe %>
+    <%= link_to "Delete", recipe_path(@recipe), method: :delete, data: {confirm: "Are you sure?"},class: 'btn btn-shadow show-btn' %>
+  <% end %>
   <hr>
-   <p class='show-text'>
-        <%= comment.body %><br />
-        <% if can? :crud, comment %>
-        <small>
-          <%= link_to(
-            "Delete",
-            recipe_comment_path(@recipe, comment),
-            method: :delete, 
-            data: {
-              confirm: "Are you sure?"
-            },
-            class: 'btn btn-shadow show-btn btn-sm',
-          ) %>
-        </small>
-        |
+</div>
+
+<div class='show-container'>
+    <h2>Add a comment</h2>
+    <% if @comment.errors.any? %>
+      <ul>
+        <% @comment.errors.full_messages.each do |msg| %>
+          <li  class="text-danger"><%= msg %><li>
         <% end %>
-        <small>
-          commented <%= time_ago_in_words(comment.created_at) %> 
-        </small>
-    </p>
-<% end %>
+      </ul>
+    <% end %>
+    <%= form_for [@recipe, @comment] do |f| %>
+       <div class="form-group">
+      <%= f.text_area(
+        :body,
+        cols: 10,
+        rows: 3,
+        placeholder: "Write your Comments!",
+        class: "form-control"
+      ) %>
+    </div>
+      <%= f.submit "Comment", class: "btn btn-shadow"  %>
+    <% end %>
+  <div>
+   <ul class="index-list">
+      <h2>Comments</h2>
+      <% @recipe.comments.each do |comment| %>
+        <div class="index-text">
+          <li class="list-item">
+            <p class='show-text'>
+                  <%= comment.body %><br />
+                  <% if can? :crud, comment %>
+                  <small>
+                    <%= link_to(
+                      "Delete",
+                      recipe_comment_path(@recipe, comment),
+                      method: :delete, 
+                      data: {
+                        confirm: "Are you sure?"
+                      },
+                      class: 'btn btn-shadow show-btn btn-sm',
+                    ) %>
+                  </small>
+                  |
+                  <% end %>
+                  <small>
+                    commented <%= time_ago_in_words(comment.created_at) %> by <%= comment.user.full_name %> <%= comment.user.last_name %>
+                  </small>
+              </p>
+          </li>
+        </div>
+      <% end %>
+    </ul>
+  </div>
+</div>

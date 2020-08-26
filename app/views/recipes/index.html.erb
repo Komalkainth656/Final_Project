@@ -1,10 +1,17 @@
-<h1>All Recipes</h1>
- 
-<% @recipes.each do |recipe|  %>
-  <div>
-    <h2><%= link_to recipe.title, recipe_path(recipe) %></h2>
+<div> 
+  <ul class="index-list">
+    <% @recipes.each do |recipe|  %>
+      <div class="index-text"> 
+        <li class='list-item'>
+          <h2 class="index-title"><%= link_to recipe.title, recipe_path(recipe) %></h2>
 
-    <p><%= recipe.body %></p>
-    <hr>
-   
-<% end %>
+          <p><%= recipe.body %></p>
+          </li>
+           <div class="user-like-info">
+          <span class="user-link">By <%= recipe.user.first_name %> <%= recipe.user.last_name %> </span>
+          <span>Likes: <%= recipe.likes.count %></span>
+          </div>
+      </div>
+    <% end %>
+  </ul>
+</div>

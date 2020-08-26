@@ -1,18 +1,22 @@
-<% if @recipe.errors.any? %>
-  <ul>
-    <% @recipe.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
-    <% end %>
-  </ul>
+<% if @recipe.errors.present? %>
+  <p>
+    <%= @recipe.errors.full_messages.join(', ')%>
+  </p>
 <% end %>
-<%= form_for @recipe do |f| %>
-  <div>
-    <%= f.label :title %>
-    <%= f.text_field :title %>
-  </div>
-  <div>
-    <%= f.label :body %>
-    <%= f.text_area :body %>
-  </div>
-  <%= f.submit %>
-<% end %>
+
+<div class='show-container'>
+
+  <%= form_with model: @recipe, local:true do |f| %>
+    <div class='form-group'>
+      <%= f.label :title %>
+      <%= f.text_field(:title, class: 'form-control')%>
+    </div>
+    <div class='form-group'>
+      <%= f.label :body %>
+      <%= f.text_area(:body, class: 'form-control', cols: 50, rows: 5)%>
+    </div>
+
+    <%= f.submit "Submit", class: 'btn btn-primary' %>
+  <% end %>
+
+</div>

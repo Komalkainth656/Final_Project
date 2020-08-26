@@ -1,16 +1,22 @@
 <nav class='navbar'>
+  <ul class='navbar-nav mr-auto'>
+
+    <div class="logo"><%= image_tag "recipe.png", class: "recipe-img"%>
+    <h5><%= link_to "All Recipes", root_path, class: 'home-btn'%></h5>
+     <%= link_to "Add Recipes", new_recipe_path, class: 'btn btn-shadow'%>
+
+    </div>
+  </ul>
   <div class="nav-item">
   <div>
     <% if user_signed_in? %>
      <span class="user"><%= current_user.first_name %> <%= current_user.last_name %></span> 
       <%= link_to "Logout", session_path, method: :delete, class: 'btn btn-shadow' %>
     <% else %> 
-      <span class="log-btns"><%= link_to "Log In", new_session_path, class: 'btn btn-shadow'%></span>
-      <span class="log-btns"><%= link_to "New User", new_user_path, class: 'btn btn-shadow'%></span>
+      <span class="log-btns"><%= link_to "Sign In", new_session_path, class: 'btn btn-shadow'%></span>
+      <span class="log-btns"><%= link_to "New Account", new_user_path, class: 'btn btn-shadow'%></span>
     <% end %>
   </div>
-  <div class="new-recipe">
-  <%= link_to "New Recipe", new_recipe_path, class: 'btn btn-shadow'%>
-  </div> 
+ 
   </div>
 </nav>
